@@ -3,8 +3,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
-  mode: 'production',
-  entry: './src/index.js',
+  mode: 'development',
+  entry: './src/js/index.js',
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist'),
@@ -16,7 +16,7 @@ module.exports = {
   },
   devtool: 'eval-source-map',
   devServer: {
-    watchFiles: ['./src/index.html'],
+    watchFiles: ['./src/html/index.html'],
   },
   module: {
     rules: [
@@ -38,7 +38,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/index.html',
+      template: './src/html/index.html',
       minify: {
         collapseWhitespace: true,
         removeComments: true,

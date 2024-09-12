@@ -1,2 +1,3 @@
-console.log('Hello');
+import '../css/styles.css';
+
 console.log('Hello');
