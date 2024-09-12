@@ -1,3 +1,113 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
 body {
-  background-color: purple;
+  background-color: #333;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  gap: 100px;
+}
+
+h1 {
+  color: rgb(190, 194, 198);
+  font-size: 70px;
+}
+
+.warning {
+  color: orange;
+  height: 100px;
+  overflow: auto;
+}
+
+.box {
+  background-color: black;
+  width: 340px;
+  height: 600px;
+  border-radius: 40px;
+  box-shadow: 10px 10px 8px rgb(30, 29, 29);
+}
+
+.screen {
+  height: 200px;
+  padding: 20px 30px 0px 30px;
+}
+
+.calculation,
+.res {
+  text-align: right;
+}
+
+.calculation {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  height: 120px;
+  color: rgb(210, 214, 216);
+  word-wrap: break-word;
+  max-height: 120px;
+}
+
+.res {
+  color: aliceblue;
+  font-size: 50px;
+  overflow-x: auto;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+button {
+  border: none;
+  font-weight: 500;
+  font-size: 24px;
+  color:aliceblue;
+}
+
+button:hover {
+  filter: brightness(120%);
+}
+
+.round {
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+}
+
+.ellipse {
+  width: 136px;
+  height: 60px;
+  border-radius: 30px;
+}
+
+.gray {
+  background-color: gray;
+  color: black;
+}
+
+.orange {
+  background-color: orange;
+}
+
+.dark-gray {
+  background-color: rgb(36, 34, 34);
+}
+
+@media screen and (max-width: 800px) {
+  h1 {
+      display: none;
+  }
+  .warning {
+      display: none;
+  }
 }
