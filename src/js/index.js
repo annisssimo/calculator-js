@@ -3,7 +3,7 @@ import '../css/styles.css';
 document.addEventListener('DOMContentLoaded', () => {
   const displayExpression = document.querySelector('.user-input');
   const displayResult = document.querySelector('.res');
-  const buttons = document.querySelectorAll('.btn');
+  const buttonsContainer = document.querySelector('.buttons');
 
   let output = '';
 
@@ -12,27 +12,56 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function calculateResult() {
-    alert('calculating...');
+    const postfix = intoPostfixNotation(output.split(' '));
+    console.log(postfix);
+  }
+
+  function handlePlusMinus() {
+    alert('changing plus minus');
   }
 
   function handleButtonClick(e) {
-    const value = e.target.textContent;
+    if (e.target.classList.contains('btn')) {
+      const value = e.target.textContent;
 
-    if (value === '=') {
-      calculateResult();
-    } else if (value === 'AC') {
-      output = '';
-      displayResult.textContent = '0';
-    } else if (value === 'Backspace') {
-      output = output.slice(0, -1);
-    } else if (['+', '-', '*', '/', '%'].includes(value)) {
-      output += ` ${value} `;
-    } else {
-      output += value;
+      if (value === '=') {
+        calculateResult();
+      } else if (value === 'AC') {
+        output = '';
+        displayResult.textContent = '0';
+      } else if (['+', '-', '*', '/', '%'].includes(value)) {
+        output += ` ${value} `;
+      } else if (value === '+/-') {
+        handlePlusMinus();
+      } else {
+        output += value;
+      }
+
+      updateDisplay();
     }
-
-    updateDisplay();
   }
 
-  buttons.forEach((button) => button.addEventListener('click', handleButtonClick));
+  buttonsContainer.addEventListener('click', handleButtonClick);
 });
+
+function intoPostfixNotation(infixValue) {
+  const stack = [];
+  let output = [];
+
+  infixValue.forEach((token) => {
+    if (!isNaN(token)) {
+      output.push(token);
+    } else if (['+', '-', '*', '/'].includes(token)) {
+      while (stack.length && ['*', '/'].includes(stack[stack.length - 1])) {
+        output.push(stack.pop());
+      }
+      stack.push(token);
+    }
+  });
+
+  while (stack.length) {
+    output.push(stack.pop());
+  }
+
+  return output;
+}
