@@ -8,13 +8,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let output = '';
 
-  // Function to set a given theme/color-scheme
   function setTheme(themeName) {
     localStorage.setItem('theme', themeName);
     document.body.className = themeName;
   }
 
-  // Function to toggle between light and dark theme
   function toggleTheme() {
     if (localStorage.getItem('theme') === 'dark') {
       setTheme('light');
@@ -23,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Immediately invoked function to set the theme on initial load
   (function initializeTheme() {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
@@ -93,8 +90,36 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  function handleKeyboardInput(e) {
+    const key = e.key;
+
+    if (key === 'Backspace' || key === 'Delete') {
+      output = output.slice(0, -1);
+    } else if (key === 'Escape') {
+      output = '';
+      displayResult.textContent = '0';
+    } else if (key === '+' || key === '-' || key === '*' || key === '/' || key === '%') {
+      if (output.length > 0) {
+        const lastChar = output.slice(-2, -1);
+        if (['+', '-', '*', '/', '%'].includes(lastChar)) {
+          output = output.slice(0, -3);
+        }
+        output += ` ${key} `;
+      }
+    } else if (key === 'Enter') {
+      calculateResult();
+    } else if (key === 'ArrowDown' || key === 'ArrowUp') {
+      handlePlusMinus();
+    } else if (!isNaN(key) || key === '.') {
+      output += key;
+    }
+
+    updateDisplay();
+  }
+
   buttonsContainer.addEventListener('click', handleButtonClick);
   themeSwitch.addEventListener('change', toggleTheme);
+  document.addEventListener('keydown', handleKeyboardInput);
 });
 
 function sanitizeExpression(expression) {
@@ -107,14 +132,13 @@ function sanitizeExpression(expression) {
 function intoPostfixNotation(infixValue) {
   const stack = [];
   let output = [];
-  const precedence = { '+': 1, '-': 1, '*': 2, '/': 2, '%': 3 }; // % has high precedence
+  const precedence = { '+': 1, '-': 1, '*': 2, '/': 2, '%': 3 };
 
   infixValue.forEach((token) => {
     if (!isNaN(token)) {
       output.push(token);
     } else if (['+', '-', '*', '/', '%'].includes(token)) {
       if (token === '%') {
-        // Take the previous number, pop it, and calculate its percentage from the previous value
         const prevNumber = output.pop();
         const previousValue = output.length > 0 ? output[output.length - 1] : null;
 
@@ -122,7 +146,6 @@ function intoPostfixNotation(infixValue) {
           const percentageValue = (Number(prevNumber) / 100) * Number(previousValue);
           output.push(percentageValue.toString());
         } else {
-          // If there's no previous value, fallback to default percentage calculation
           output.push((Number(prevNumber) / 100).toString());
         }
       } else {

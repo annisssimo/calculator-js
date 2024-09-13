@@ -33,7 +33,6 @@ body {
   gap: 100px;
 }
 
-
 body.dark {
   background-color: var(--background-dark);
   color: var(--text-dark);
@@ -187,7 +186,7 @@ button:hover {
 
 .slider:before {
   position: absolute;
-  content: "";
+  content: '';
   height: 40px;
   width: 40px;
   left: 0px;
