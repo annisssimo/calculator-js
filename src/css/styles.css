@@ -3,8 +3,19 @@
   padding: 0;
 }
 
+:root {
+  --dark-gray: #333;
+  --gray: #808080;
+  --light-gray: #bec2c6;
+  --gray-button: #242222;
+  --black: #000;
+  --orange: #ffa500;
+  --black-shadow: #1e1d1d;
+  --white: #f0f8ff;
+}
+
 body {
-  background-color: #333;
+  background-color: var(--dark-gray);
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva,
     Verdana, sans-serif;
   text-align: center;
@@ -16,26 +27,31 @@ body {
 }
 
 h1 {
-  color: rgb(190, 194, 198);
+  color: var(--light-gray);
   font-size: 70px;
 }
 
 .warning {
-  color: orange;
+  color: var(--orange);
   height: 100px;
   overflow: auto;
 }
 
 .box {
-  background-color: black;
+  background-color: var(--black);
   width: 340px;
   height: 600px;
   border-radius: 40px;
-  box-shadow: 10px 10px 8px rgb(30, 29, 29);
+  box-shadow: 10px 10px 8px var(--black-shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .screen {
   height: 200px;
+  width: 260px;
   padding: 20px 30px 0px 30px;
 }
 
@@ -49,30 +65,22 @@ h1 {
   align-items: flex-end;
   justify-content: flex-end;
   height: 120px;
-  color: rgb(210, 214, 216);
+  color: var(--light-gray);
   word-wrap: break-word;
   max-height: 120px;
 }
 
 .res {
-  color: aliceblue;
+  color: var(--white);
   font-size: 50px;
   overflow-x: auto;
-}
-
-.buttons {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
 }
 
 button {
   border: none;
   font-weight: 500;
   font-size: 24px;
-  color: aliceblue;
+  color: var(--white);
 }
 
 button:hover {
@@ -92,16 +100,31 @@ button:hover {
 }
 
 .gray {
-  background-color: gray;
-  color: black;
+  background-color: var(--gray);
+  color: var(--black);
 }
 
 .orange {
-  background-color: orange;
+  background-color: var(--orange);
 }
 
 .dark-gray {
-  background-color: rgb(36, 34, 34);
+  background-color: var(--gray-button);
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 10px;
+}
+
+button {
+  width: 100%;
+  height: 60px;
+}
+
+.ellipse {
+  grid-column: span 2;
 }
 
 @media screen and (max-width: 800px) {
@@ -110,5 +133,10 @@ button:hover {
   }
   .warning {
     display: none;
+  }
+
+  body {
+    display: flex;
+    gap: 0px;
   }
 }
