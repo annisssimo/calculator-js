@@ -52,6 +52,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function handlePlusMinus() {
+    if (output.trim() === '' || output.trim() === 0) return;
+
     const parts = output.trim().split(' ');
 
     if (parts.length > 0 && !isNaN(parts[parts.length - 1])) {
@@ -66,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
       parts.push(lastNumber);
       output = parts.join(' ');
       updateDisplay();
+      calculateResult();
     }
   }
 
