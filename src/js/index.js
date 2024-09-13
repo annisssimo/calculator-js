@@ -4,8 +4,36 @@ document.addEventListener('DOMContentLoaded', () => {
   const displayExpression = document.querySelector('.user-input');
   const displayResult = document.querySelector('.res');
   const buttonsContainer = document.querySelector('.buttons');
+  const themeSwitch = document.getElementById('slider');
 
   let output = '';
+
+  // Function to set a given theme/color-scheme
+  function setTheme(themeName) {
+    localStorage.setItem('theme', themeName);
+    document.body.className = themeName;
+  }
+
+  // Function to toggle between light and dark theme
+  function toggleTheme() {
+    if (localStorage.getItem('theme') === 'dark') {
+      setTheme('light');
+    } else {
+      setTheme('dark');
+    }
+  }
+
+  // Immediately invoked function to set the theme on initial load
+  (function initializeTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      setTheme('dark');
+      themeSwitch.checked = true;
+    } else {
+      setTheme('light');
+      themeSwitch.checked = false;
+    }
+  })();
 
   function updateDisplay() {
     displayExpression.textContent = output;
@@ -66,6 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   buttonsContainer.addEventListener('click', handleButtonClick);
+  themeSwitch.addEventListener('change', toggleTheme);
 });
 
 function sanitizeExpression(expression) {
