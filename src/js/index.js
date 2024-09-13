@@ -91,6 +91,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       } else if (value === '+/-') {
         handlePlusMinus();
+      } else if (value === '.') {
+        // Проверка на несколько точек подряд
+        const lastNumber = output.split(/[\s+*/%-]+/).pop();
+        if (!lastNumber.includes('.')) {
+          output += value;
+        }
       } else {
         output += value;
       }
@@ -107,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (key === 'Escape') {
       output = '';
       displayResult.textContent = '0';
-    } else if (key === '+' || key === '-' || key === '*' || key === '/' || key === '%') {
+    } else if (['+', '-', '*', '/', '%'].includes(key)) {
       if (output.length > 0) {
         const lastChar = output.slice(-2, -1);
         if (['+', '-', '*', '/', '%'].includes(lastChar)) {
@@ -120,7 +126,10 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (key === 'ArrowDown' || key === 'ArrowUp') {
       handlePlusMinus();
     } else if (!isNaN(key) || key === '.') {
-      output += key;
+      const lastNumber = output.split(/[\s+*/%-]+/).pop();
+      if (key !== '.' || !lastNumber.includes('.')) {
+        output += key;
+      }
     }
 
     updateDisplay();
@@ -141,6 +150,8 @@ function sanitizeExpression(expression) {
   if (['+', '-', '*', '/', '%'].includes(lastChar)) {
     sanitized = sanitized.slice(0, -1).trim();
   }
+
+  sanitized = sanitized.replace(/([+\-*/])\s*\.$/, '$10');
 
   return sanitized;
 }
@@ -207,5 +218,11 @@ function evaluatePostfix(postfix) {
     }
   });
 
-  return stack[0];
+  const result = stack[0];
+
+  if (isNaN(result)) {
+    return 0;
+  }
+
+  return result;
 }
