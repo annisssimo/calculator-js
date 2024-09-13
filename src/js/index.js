@@ -78,16 +78,30 @@ function sanitizeExpression(expression) {
 function intoPostfixNotation(infixValue) {
   const stack = [];
   let output = [];
-  const precedence = { '+': 1, '-': 1, '*': 2, '/': 2 };
+  const precedence = { '+': 1, '-': 1, '*': 2, '/': 2, '%': 3 }; // % has high precedence
 
   infixValue.forEach((token) => {
     if (!isNaN(token)) {
       output.push(token);
-    } else if (['+', '-', '*', '/'].includes(token)) {
-      while (stack.length && precedence[token] <= precedence[stack[stack.length - 1]]) {
-        output.push(stack.pop());
+    } else if (['+', '-', '*', '/', '%'].includes(token)) {
+      if (token === '%') {
+        // Take the previous number, pop it, and calculate its percentage from the previous value
+        const prevNumber = output.pop();
+        const previousValue = output.length > 0 ? output[output.length - 1] : null;
+
+        if (previousValue && !isNaN(previousValue)) {
+          const percentageValue = (Number(prevNumber) / 100) * Number(previousValue);
+          output.push(percentageValue.toString());
+        } else {
+          // If there's no previous value, fallback to default percentage calculation
+          output.push((Number(prevNumber) / 100).toString());
+        }
+      } else {
+        while (stack.length && precedence[token] <= precedence[stack[stack.length - 1]]) {
+          output.push(stack.pop());
+        }
+        stack.push(token);
       }
-      stack.push(token);
     }
   });
 
