@@ -21,7 +21,21 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function handlePlusMinus() {
-    alert('changing plus minus');
+    const parts = output.trim().split(' ');
+
+    if (parts.length > 0 && !isNaN(parts[parts.length - 1])) {
+      let lastNumber = parts.pop();
+
+      if (lastNumber.startsWith('-')) {
+        lastNumber = lastNumber.slice(1);
+      } else {
+        lastNumber = '-' + lastNumber;
+      }
+
+      parts.push(lastNumber);
+      output = parts.join(' ');
+      updateDisplay();
+    }
   }
 
   function handleButtonClick(e) {
