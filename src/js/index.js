@@ -38,6 +38,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function calculateResult() {
     const sanitizedOutput = sanitizeExpression(output);
+
+    if (sanitizedOutput.trim() === '') {
+      displayResult.textContent = '0';
+      return;
+    }
+
     const postfix = intoPostfixNotation(sanitizedOutput.split(' '));
     const result = evaluatePostfix(postfix);
     displayResult.textContent = result;
@@ -74,9 +80,9 @@ document.addEventListener('DOMContentLoaded', () => {
         displayResult.textContent = '0';
       } else if (['+', '-', '*', '/', '%'].includes(value)) {
         if (output.length > 0) {
-          const lastChar = output.slice(-2, -1);
+          const lastChar = output.trim().slice(-1);
           if (['+', '-', '*', '/', '%'].includes(lastChar)) {
-            output = output.slice(0, -3);
+            output = output.slice(0, -2);
           }
           output += ` ${value} `;
         }
@@ -123,10 +129,17 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function sanitizeExpression(expression) {
-  return expression
+  let sanitized = expression
     .replace(/([+\-*/%])\1+/g, '$1')
     .replace(/(\s)+/g, ' ')
     .trim();
+
+  const lastChar = sanitized.slice(-1);
+  if (['+', '-', '*', '/', '%'].includes(lastChar)) {
+    sanitized = sanitized.slice(0, -1).trim();
+  }
+
+  return sanitized;
 }
 
 function intoPostfixNotation(infixValue) {
