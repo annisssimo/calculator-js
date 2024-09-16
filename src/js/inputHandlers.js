@@ -3,7 +3,7 @@ import { updateDisplay } from './display.js';
 
 let output = '';
 
-export function handlePlusMinus() {
+export function handlePlusMinus(displayExpression) {
   if (output.trim() === '' || output.trim() === 0) return;
 
   const parts = output.trim().split(' ');
@@ -19,8 +19,7 @@ export function handlePlusMinus() {
 
     parts.push(lastNumber);
     output = parts.join(' ');
-    updateDisplay();
-    calculateResult();
+    updateDisplay(displayExpression, output);
   }
 }
 
@@ -42,7 +41,7 @@ export function handleButtonClick(e, displayExpression, displayResult) {
         output += ` ${value} `;
       }
     } else if (value === '+/-') {
-      handlePlusMinus();
+      handlePlusMinus(displayExpression);
     } else if (value === '.') {
       const lastNumber = output.split(/[\s+*/%-]+/).pop();
       if (!lastNumber.includes('.')) {
@@ -75,7 +74,7 @@ export function handleKeyboardInput(e, displayExpression, displayResult) {
   } else if (key === 'Enter') {
     calculateResult(displayResult);
   } else if (key === 'ArrowDown' || key === 'ArrowUp') {
-    handlePlusMinus();
+    handlePlusMinus(displayExpression);
   } else if (!isNaN(key) || key === '.') {
     const lastNumber = output.split(/[\s+*/%-]+/).pop();
     if (key !== '.' || !lastNumber.includes('.')) {
@@ -88,6 +87,7 @@ export function handleKeyboardInput(e, displayExpression, displayResult) {
 
 export function calculateResult(displayResult) {
   const sanitizedOutput = sanitizeExpression(output);
+
   if (sanitizedOutput.trim() === '') {
     displayResult.textContent = '0';
     return;

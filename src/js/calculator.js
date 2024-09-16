@@ -17,7 +17,7 @@ export function sanitizeExpression(expression) {
 export function intoPostfixNotation(infixValue) {
   const stack = [];
   let output = [];
-  const precedence = { '+': 1, '-': 1, '*': 2, '/': 2, '%': 3 };
+  const precedence = { '+': 1, '-': 1, '*': 2, '/': 2, '%': 2 };
 
   infixValue.forEach((token) => {
     if (!isNaN(token)) {
@@ -25,14 +25,7 @@ export function intoPostfixNotation(infixValue) {
     } else if (['+', '-', '*', '/', '%'].includes(token)) {
       if (token === '%') {
         const prevNumber = output.pop();
-        const previousValue = output.length > 0 ? output[output.length - 1] : null;
-
-        if (previousValue && !isNaN(previousValue)) {
-          const percentageValue = (Number(prevNumber) / 100) * Number(previousValue);
-          output.push(percentageValue.toString());
-        } else {
-          output.push((Number(prevNumber) / 100).toString());
-        }
+        output.push((Number(prevNumber) / 100).toString());
       } else {
         while (stack.length && precedence[token] <= precedence[stack[stack.length - 1]]) {
           output.push(stack.pop());

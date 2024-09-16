@@ -1,5 +1,6 @@
 {
   "name": "calculator",
+  "homepage": "https://annisssimo.github.io/calculator-js",
   "version": "1.0.0",
   "description": "Basic JS calculator using reverse Polish notation",
   "main": "index.js",
@@ -10,7 +11,9 @@
     "lint": "eslint 'src/**/*.js'",
     "lint:fix": "eslint --fix 'src/**/*.js'",
     "format": "npx prettier --write ./src",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "author": "",
   "license": "ISC",
@@ -24,10 +27,12 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-simple-import-sort": "^12.1.1",
+    "gh-pages": "^6.1.1",
     "globals": "^15.9.0",
     "html-webpack-plugin": "^5.6.0",
     "husky": "^9.1.6",
     "lint-staged": "^15.2.10",
+    "mini-css-extract-plugin": "^2.9.1",
     "prettier": "3.3.3",
     "style-loader": "^4.0.0",
     "terser-webpack-plugin": "^5.3.10",
