@@ -5,7 +5,7 @@ export function sanitizeExpression(expression) {
     .trim();
 
   const lastChar = sanitized.slice(-1);
-  if (['+', '-', '*', '/', '%'].includes(lastChar)) {
+  if (['+', '-', '*', '/'].includes(lastChar)) {
     sanitized = sanitized.slice(0, -1).trim();
   }
 
@@ -17,7 +17,7 @@ export function sanitizeExpression(expression) {
 export function intoPostfixNotation(infixValue) {
   const stack = [];
   let output = [];
-  const precedence = { '+': 1, '-': 1, '*': 2, '/': 2, '%': 2 };
+  const precedence = { '+': 1, '-': 1, '*': 2, '/': 2, '%': 3 };
 
   infixValue.forEach((token) => {
     if (!isNaN(token)) {
@@ -25,8 +25,14 @@ export function intoPostfixNotation(infixValue) {
     } else if (['+', '-', '*', '/', '%'].includes(token)) {
       if (token === '%') {
         const prevNumber = output.pop();
-        const newValue = prevNumber !== 0 ? (Number(prevNumber) / 100).toString() : '0';
-        output.push(newValue);
+        const previousValue = output.length > 0 ? output[output.length - 1] : null;
+
+        if (previousValue && !isNaN(previousValue)) {
+          const percentageValue = (Number(prevNumber) / 100) * Number(previousValue);
+          output.push(percentageValue.toString());
+        } else {
+          output.push((Number(prevNumber) / 100).toString());
+        }
       } else {
         while (stack.length && precedence[token] <= precedence[stack[stack.length - 1]]) {
           output.push(stack.pop());
@@ -64,7 +70,6 @@ export function evaluatePostfix(postfix) {
           stack.push(a * b);
           break;
         case '/':
-          // Обработка деления на 0
           if (b === 0) {
             stack.push('Error');
           } else {
@@ -77,6 +82,5 @@ export function evaluatePostfix(postfix) {
 
   const result = stack[0];
 
-  // Если результат "Error", вернуть его, иначе убедиться, что результат корректный
   return result === 'Error' ? 'Error' : isNaN(result) ? 0 : result;
 }
