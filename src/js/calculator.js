@@ -25,7 +25,8 @@ export function intoPostfixNotation(infixValue) {
     } else if (['+', '-', '*', '/', '%'].includes(token)) {
       if (token === '%') {
         const prevNumber = output.pop();
-        output.push((Number(prevNumber) / 100).toString());
+        const newValue = prevNumber !== 0 ? (Number(prevNumber) / 100).toString() : '0';
+        output.push(newValue);
       } else {
         while (stack.length && precedence[token] <= precedence[stack[stack.length - 1]]) {
           output.push(stack.pop());
@@ -63,7 +64,12 @@ export function evaluatePostfix(postfix) {
           stack.push(a * b);
           break;
         case '/':
-          stack.push(a / b);
+          // Обработка деления на 0
+          if (b === 0) {
+            stack.push('Error');
+          } else {
+            stack.push(a / b);
+          }
           break;
       }
     }
@@ -71,5 +77,6 @@ export function evaluatePostfix(postfix) {
 
   const result = stack[0];
 
-  return isNaN(result) ? 0 : result;
+  // Если результат "Error", вернуть его, иначе убедиться, что результат корректный
+  return result === 'Error' ? 'Error' : isNaN(result) ? 0 : result;
 }

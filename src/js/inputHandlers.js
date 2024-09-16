@@ -94,7 +94,14 @@ export function calculateResult(displayResult) {
   }
 
   const postfix = intoPostfixNotation(sanitizedOutput.split(' '));
-  const result = evaluatePostfix(postfix);
-  displayResult.textContent = result;
-  output = result.toString();
+  let result = evaluatePostfix(postfix);
+
+  // Если результат 'Error', сохранить его для дальнейших вычислений
+  if (result === 'Error') {
+    displayResult.textContent = result;
+    output = ''; // Очистить вывод, чтобы при следующем вводе начинать с нуля
+  } else {
+    displayResult.textContent = result;
+    output = result.toString();
+  }
 }

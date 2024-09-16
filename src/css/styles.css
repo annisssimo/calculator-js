@@ -31,7 +31,9 @@ body {
   align-items: center;
   height: 100vh;
   gap: 100px;
-  transition: background-color 0.5s ease, color 0.5s ease;
+  transition:
+    background-color 0.5s ease,
+    color 0.5s ease;
 }
 
 body.dark {
